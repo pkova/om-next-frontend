@@ -3,6 +3,11 @@
             [om.next :as om :refer-macros [defui]]
             [om.dom :as dom]))
 
-(enable-console-print!)
+(defui App
+  Object
+  (render [this]
+          (dom/div nil "Hello, World!")))
 
-(println "Hello world!")
+(def app (om/factory App))
+
+(js/ReactDOM.render (app) (gdom/getElement "app"))
