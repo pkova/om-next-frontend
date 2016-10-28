@@ -37,3 +37,6 @@
               :justifyContent "center"})
 
 (def body #js {:textAlign "center"})
+
+(def instafeed #js {:maxWidth "700px"
+                    :display "inline-block"})

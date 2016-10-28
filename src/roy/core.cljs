@@ -18,6 +18,7 @@
 
 (defn video []
   (dom/video #js {:src "./assets/37951023.mp4"
+                  :loop true
                   :autoPlay true
                   :muted true
                   :style styles/video}))
@@ -48,7 +49,8 @@
           (dom/div #js {:style styles/body}
                    (dom/h1 nil "Sometimes we work. Always we eat.")
                    (dom/h2 nil "What shall we feast on this week? Inspiration from the @eater_sf instagram:")
-                   (dom/div #js {:id "instafeed"}))))
+                   (dom/div #js {:id "instafeed"
+                                 :style styles/instafeed}))))
 
 (def body (om/factory Body))
 
