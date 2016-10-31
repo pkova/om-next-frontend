@@ -4,6 +4,27 @@
             [om.dom :as dom]
             [roy.styles :as styles]))
 
+(def app-state
+  (atom
+   {:rounds [{:round 1
+              :img ""
+              :category "PEPPERONI PIZZA"
+              :first-contestant "Jersey"
+              :second-contestant "Slice House"
+              :selected true}
+
+             {:round 2
+              :img ""
+              :category "MEATBALL SUBS"
+              :first-contestant "Jersey"
+              :second-contestant "Merrigan"}
+
+             {:round 3
+              :img ""
+              :category "CHEESEBURGERS"
+              :first-contestant "Popsons"
+              :second-contestant "In-N-Out"}]}))
+
 (defn getfeedback-eats-h2 []
   (dom/h2 #js {:style styles/getfeedback-eats-h2}
           "GETFEEDBACK EATS"))
@@ -41,7 +62,7 @@
                             :accessToken "297334.9c2041d.700c595cb96b4873b0d547c0ca70f022"
                             :template "<a href=\"{{link}}\"><img src=\"{{image}}\" /></a>"})))
 
-(defui Body
+(defui Instafeed
   Object
   (componentDidMount [this]
                      (get-instafeed))
@@ -52,14 +73,27 @@
                    (dom/div #js {:id "instafeed"
                                  :style styles/instafeed}))))
 
-(def body (om/factory Body))
+(def instafeed (om/factory Instafeed))
+
+(defui Winner
+  Object
+  (render [this]
+          (dom/div #js {:style #js {:textAlign "center"}}
+                   (dom/h1 nil "And the winner is...")
+                   (dom/div #js {:style #js {:display "inline-block"}}
+                            (dom/div nil "ROUND 1")
+                            (dom/div nil "ROUND 2")
+                            (dom/div nil "ROUND 3")))))
+
+(def winner (om/factory Winner))
 
 (defui App
   Object
   (render [this]
           (dom/div nil
                    (nav)
-                   (body))))
+                   (instafeed)
+                   (winner))))
 
 (def app (om/factory App))
 
