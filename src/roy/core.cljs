@@ -25,6 +25,16 @@
               :first-contestant "Popsons"
               :second-contestant "In-N-Out"}]}))
 
+
+(defmulti read (fn [env key params] key))
+
+(defmethod read :default
+  [{:keys [state] :as env} key params]
+  (let [st @state]
+    (if-let [[_ value] (find st key)]
+      {:value value}
+      {:value :not-found})))
+
 (defn getfeedback-eats-h2 []
   (dom/h2 #js {:style styles/getfeedback-eats-h2}
           "GETFEEDBACK EATS"))
@@ -95,7 +105,10 @@
                    (instafeed)
                    (winner))))
 
-(def app (om/factory App))
 
+(def reconciler
+  (om/reconciler
+   {:state app-state
+    :parser (om/parser {:read read})}))
 
-(js/ReactDOM.render (app) (gdom/getElement "app"))
+(om/add-root! reconciler App (gdom/getElement "app"))
