@@ -95,7 +95,7 @@
                             (dom/div nil "ROUND 2")
                             (dom/div nil "ROUND 3")))))
 
-(def winner (om/factory Winner))
+(def winner (om/factory Winner {:keyfn :id}))
 
 (defui App
   Object
@@ -104,7 +104,6 @@
                    (nav)
                    (instafeed)
                    (winner))))
-
 
 (def reconciler
   (om/reconciler
