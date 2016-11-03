@@ -32,7 +32,7 @@
   [{:keys [state] :as env} key params]
   (let [st @state]
     (if-let [[_ value] (find st key)]
-      {:value value}
+      {:value (filter #(contains? % (:k params)) value)}
       {:value :not-found})))
 
 (defn getfeedback-eats-h2 []
@@ -86,24 +86,31 @@
 (def instafeed (om/factory Instafeed))
 
 (defui Winner
+  static om/IQuery
+  (query [this]
+         '[(:rounds {:k :selected})])
   Object
   (render [this]
           (dom/div #js {:style #js {:textAlign "center"}}
-                   (dom/h1 nil "And the winner is...")
+                   (dom/h1 nil (str (om/props this)))
                    (dom/div #js {:style #js {:display "inline-block"}}
                             (dom/div nil "ROUND 1")
                             (dom/div nil "ROUND 2")
                             (dom/div nil "ROUND 3")))))
 
-(def winner (om/factory Winner {:keyfn :h1}))
+(def winner (om/factory Winner {:keyfn :round}))
 
 (defui App
+  static om/IQuery
+  (query [this]
+         [(flatten (om/get-query Winner))])
   Object
   (render [this]
-          (dom/div nil
-                   (nav)
-                   (instafeed {:h1 "Sometimes we work. Always we eat" :h2 "What shall we feast on this week? Inspiration from the @eater_sf instagram:"})
-                   (winner))))
+          (let [data (om/props this)]
+            (dom/div nil
+                     (nav)
+                     (instafeed {:h1 "Sometimes we work. Always we eat" :h2 "What shall we feast on this week? Inspiration from the @eater_sf instagram:"})
+                     (winner data)))))
 
 (def reconciler
   (om/reconciler
