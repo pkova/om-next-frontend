@@ -78,8 +78,8 @@
                      (get-instafeed))
   (render [this]
           (dom/div #js {:style styles/body}
-                   (dom/h1 nil "Sometimes we work. Always we eat.")
-                   (dom/h2 nil "What shall we feast on this week? Inspiration from the @eater_sf instagram:")
+                   (dom/h1 nil (:h1 (om/props this)))
+                   (dom/h2 nil (:h2 (om/props this)))
                    (dom/div #js {:id "instafeed"
                                  :style styles/instafeed}))))
 
@@ -95,14 +95,14 @@
                             (dom/div nil "ROUND 2")
                             (dom/div nil "ROUND 3")))))
 
-(def winner (om/factory Winner {:keyfn :id}))
+(def winner (om/factory Winner {:keyfn :h1}))
 
 (defui App
   Object
   (render [this]
           (dom/div nil
                    (nav)
-                   (instafeed)
+                   (instafeed {:h1 "Sometimes we work. Always we eat" :h2 "What shall we feast on this week? Inspiration from the @eater_sf instagram:"})
                    (winner))))
 
 (def reconciler
